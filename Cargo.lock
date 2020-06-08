@@ -90,6 +90,7 @@ checksum = "cff77d8686867eceff3105329d4698d96c2391c176d5d03adc90c7389162b5b8"
 name = "att_1_boxed"
 version = "0.1.0"
 dependencies = [
+ "chess",
  "crossbeam",
  "ggez",
  "shakmaty",
@@ -264,6 +265,18 @@ checksum = "55e7ec0b74fe5897894cbc207092c577e87c52f8a59e8ca8d97ef37551f60a49"
 dependencies = [
  "gleam",
  "libc",
+]
+
+[[package]]
+name = "chess"
+version = "3.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "181a3a07c9908c5f3a6d94e62da95fedcd8c69f7a8591c21fe9756af435cc837"
+dependencies = [
+ "arrayvec 0.4.12",
+ "failure",
+ "nodrop",
+ "rand 0.4.6",
 ]
 
 [[package]]
@@ -561,6 +574,28 @@ dependencies = [
  "proc-macro2 0.4.30",
  "quote 0.6.13",
  "syn 0.15.44",
+]
+
+[[package]]
+name = "failure"
+version = "0.1.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d32e9bd16cc02eae7db7ef620b392808b89f6a5e16bb3497d159c6b92a0f4f86"
+dependencies = [
+ "backtrace",
+ "failure_derive",
+]
+
+[[package]]
+name = "failure_derive"
+version = "0.1.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "aa4da3c766cd7a0db8242e326e9e4e081edd567072893ed320008189715366a4"
+dependencies = [
+ "proc-macro2 1.0.13",
+ "quote 1.0.6",
+ "syn 1.0.22",
+ "synstructure",
 ]
 
 [[package]]
@@ -2054,6 +2089,18 @@ checksum = "1425de3c33b0941002740a420b1a906a350b88d08b82b2c8a01035a3f9447bac"
 dependencies = [
  "proc-macro2 1.0.13",
  "quote 1.0.6",
+ "unicode-xid 0.2.0",
+]
+
+[[package]]
+name = "synstructure"
+version = "0.12.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b834f2d66f734cb897113e34aaff2f1ab4719ca946f9a7358dba8f8064148701"
+dependencies = [
+ "proc-macro2 1.0.13",
+ "quote 1.0.6",
+ "syn 1.0.22",
  "unicode-xid 0.2.0",
 ]
 
