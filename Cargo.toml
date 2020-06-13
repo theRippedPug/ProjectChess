@@ -8,6 +8,5 @@ edition = "2018"
 
 [dependencies]
 ggez= "0.5.1"
-shakmaty = ""
 crossbeam = "0.7"
 chess = ""
