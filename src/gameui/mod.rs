@@ -6,8 +6,6 @@ use ggez::graphics;
 use ggez::graphics::Image;
 use ggez::nalgebra as na;
 use ggez::{Context, GameResult};
-use shakmaty;
-use shakmaty::{Color, Role};
 
 use std::env;
 use std::path;
@@ -16,8 +14,7 @@ mod reneder_hepler;
 
 pub const SCALEFACTOR: f32 = 0.15;
 
-
-#[derive(Copy,Clone,Debug)]
+#[derive(Copy, Clone, Debug)]
 pub enum ChessPieceType {
 	Pawn = 0,
 	Bishop = 1,
@@ -51,14 +48,14 @@ struct MainState {
 	black_pieces: [graphics::Image; 6],
 	white_pieces: [graphics::Image; 6],
 	chess_board: graphics::Image,
-	live_board: shakmaty::Board,
-	recv: crossbeam::Receiver<shakmaty::Board>,
+	live_board: chess::Board,
+	recv: crossbeam::Receiver<chess::Board>,
 	piece_reg: Vec<ChessPiece>,
 }
 
 impl MainState {
 	//this function initialises all data in the game
-	fn new(ctx: &mut Context, recv: crossbeam::Receiver<shakmaty::Board>) -> GameResult<MainState> {
+	fn new(ctx: &mut Context, recv: crossbeam::Receiver<chess::Board>) -> GameResult<MainState> {
 		//load all black pieces from hard disc
 		let black_pieces = [
 			Image::new(ctx, "/chess_pawns/chess-pawn-black.png")?,
@@ -85,7 +82,7 @@ impl MainState {
 			black_pieces,
 			white_pieces,
 			chess_board,
-			live_board: shakmaty::Board::new(),
+			live_board: chess::Board::default(),
 			recv,
 			piece_reg: Vec::new(),
 		};
@@ -119,24 +116,32 @@ impl event::EventHandler for MainState {
 		//graphics::draw(ctx, &circle, (na::Point2::new(0.0, 0.0),))?;
 		//graphics::draw(ctx, &self.black_pieces[2], graphics::DrawParam::new())?;
 		let simpl_board = reneder_hepler::getMatrix(&self.live_board);
-		for (y,row) in simpl_board.iter().enumerate(){
-			for (x,maybe_piece) in row.iter().enumerate(){
+		for (y, row) in simpl_board.iter().enumerate() {
+			for (x, maybe_piece) in row.iter().enumerate() {
 				if maybe_piece.is_some() {
 					let piece = maybe_piece.as_ref().unwrap();
-					if piece.piece_color== 'b'{
+					if piece.piece_color == 'b' {
 						//println!("({},{},{})",piece.piece_type as usize,x,y);
-						graphics::draw(ctx,
+						graphics::draw(
+							ctx,
 							&self.black_pieces[piece.piece_type as usize],
 							graphics::DrawParam::new()
-							.scale([SCALEFACTOR,SCALEFACTOR])
-							.dest([ 500.0 * SCALEFACTOR * x as f32 + SCALEFACTOR * 50.0,500.0 * SCALEFACTOR * y as f32 + SCALEFACTOR * 50.0])
-					)?;
-					}else{
-						graphics::draw(ctx,
+								.scale([SCALEFACTOR, SCALEFACTOR])
+								.dest([
+									500.0 * SCALEFACTOR * x as f32 + SCALEFACTOR * 50.0,
+									500.0 * SCALEFACTOR * y as f32 + SCALEFACTOR * 50.0,
+								]),
+						)?;
+					} else {
+						graphics::draw(
+							ctx,
 							&self.white_pieces[piece.piece_type as usize],
 							graphics::DrawParam::new()
-							.scale([SCALEFACTOR,SCALEFACTOR])
-							.dest([ 500.0 * SCALEFACTOR * x as f32 + SCALEFACTOR * 50.0 ,500.0 * SCALEFACTOR * y as f32 + SCALEFACTOR * 50.0])
+								.scale([SCALEFACTOR, SCALEFACTOR])
+								.dest([
+									500.0 * SCALEFACTOR * x as f32 + SCALEFACTOR * 50.0,
+									500.0 * SCALEFACTOR * y as f32 + SCALEFACTOR * 50.0,
+								]),
 						)?;
 					}
 				}
@@ -149,7 +154,7 @@ impl event::EventHandler for MainState {
 	}
 }
 
-pub fn main(recv: crossbeam::channel::Receiver<shakmaty::Board>) -> ggez::GameResult {
+pub fn main(recv: crossbeam::channel::Receiver<chess::Board>) -> ggez::GameResult {
 	//mount resource directory
 	let resource_dir = if let Ok(manifest_dir) = env::var("CARGO_MANIFEST_DIR") {
 		let mut path = path::PathBuf::from(manifest_dir);
@@ -181,22 +186,4 @@ pub fn main(recv: crossbeam::channel::Receiver<shakmaty::Board>) -> ggez::GameRe
 	let state = &mut MainState::new(ctx, recv)?;
 	//run the game
 	event::run(ctx, event_loop, state)
-}
-
-pub fn getType(tp: shakmaty::Piece) -> (char, ChessPieceType) {
-	let colour: char = match tp.color {
-		Color::Black => 'b',
-		Color::White => 'w',
-	};
-
-	let piece = match tp.role {
-		Role::Pawn => ChessPieceType::Pawn,
-		Role::Bishop => ChessPieceType::Bishop,
-		Role::Knight => ChessPieceType::Knight,
-		Role::Rook => ChessPieceType::Rook,
-		Role::Queen => ChessPieceType::Queen,
-		Role::King => ChessPieceType::King,
-	};
-
-	(colour, piece)
 }

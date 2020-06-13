@@ -1,19 +1,21 @@
+#![allow(non_snake_case)]
+
 mod gameui;
 use crossbeam::crossbeam_channel::unbounded;
-use shakmaty;
-use shakmaty::{Color, Role};
+use chess;
 
 fn main() {
 	println!("Hello, world!");
 
-	let board = shakmaty::Board::new();
+
+	let rep_board = chess::Board::default();
 
 	let (s, r) = unbounded();
 	let handle = std::thread::spawn(move || {
 		let _ = gameui::main(r);
 	});
-	s.send(board.clone()).unwrap();
-	println!("{:?}", board);
+	s.send(rep_board.clone()).unwrap();
+	println!("{:?}", rep_board);
 
 	handle.join();
 }
