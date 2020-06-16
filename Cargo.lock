@@ -261,13 +261,12 @@ dependencies = [
 [[package]]
 name = "chess"
 version = "3.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "181a3a07c9908c5f3a6d94e62da95fedcd8c69f7a8591c21fe9756af435cc837"
+source = "git+https://github.com/jordanbray/chess#a09032e36a1d10fdeab163afd943df66c00b897b"
 dependencies = [
- "arrayvec 0.4.12",
+ "arrayvec 0.5.1",
  "failure",
  "nodrop",
- "rand 0.4.6",
+ "rand 0.7.3",
 ]
 
 [[package]]
@@ -1551,7 +1550,7 @@ dependencies = [
  "rand_isaac",
  "rand_jitter",
  "rand_os",
- "rand_pcg",
+ "rand_pcg 0.1.2",
  "rand_xorshift",
  "winapi",
 ]
@@ -1567,6 +1566,7 @@ dependencies = [
  "rand_chacha 0.2.2",
  "rand_core 0.5.1",
  "rand_hc 0.2.0",
+ "rand_pcg 0.2.1",
 ]
 
 [[package]]
@@ -1673,6 +1673,15 @@ checksum = "abf9b09b01790cfe0364f52bf32995ea3c39f4d2dd011eac241d2914146d0b44"
 dependencies = [
  "autocfg 0.1.7",
  "rand_core 0.4.2",
+]
+
+[[package]]
+name = "rand_pcg"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "16abd0c1b639e9eb4d7c50c0b8100b0d0f849be2349829c740fe8e6eb4816429"
+dependencies = [
+ "rand_core 0.5.1",
 ]
 
 [[package]]

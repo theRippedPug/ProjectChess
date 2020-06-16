@@ -44,13 +44,11 @@ pub struct ChessPiece {
 }
 //main state:- all data in the game recides here
 struct MainState {
-	pos_x: f32,
 	black_pieces: [graphics::Image; 6],
 	white_pieces: [graphics::Image; 6],
 	chess_board: graphics::Image,
 	live_board: chess::Board,
 	recv: crossbeam::Receiver<chess::Board>,
-	piece_reg: Vec<ChessPiece>,
 }
 
 impl MainState {
@@ -78,13 +76,11 @@ impl MainState {
 		let chess_board = Image::new(ctx, "/chess_pawns/board.png")?;
 		//initialise the main state
 		let s = MainState {
-			pos_x: 0.0,
 			black_pieces,
 			white_pieces,
 			chess_board,
 			live_board: chess::Board::default(),
 			recv,
-			piece_reg: Vec::new(),
 		};
 		Ok(s)
 	}
@@ -92,7 +88,10 @@ impl MainState {
 
 impl event::EventHandler for MainState {
 	fn update(&mut self, _ctx: &mut ggez::Context) -> ggez::GameResult {
-		self.pos_x = self.pos_x % 800.0 + 1.0;
+		if !self.recv.is_empty() {
+			self.live_board = self.recv.recv().unwrap();
+		}
+
 		Ok(())
 	}
 
@@ -105,15 +104,6 @@ impl event::EventHandler for MainState {
 			graphics::DrawParam::new().scale([SCALEFACTOR * 2.0, SCALEFACTOR * 2.0]),
 		)?;
 
-		let circle = graphics::Mesh::new_circle(
-			ctx,
-			graphics::DrawMode::fill(),
-			na::Point2::new(self.pos_x, 380.0),
-			100.0,
-			2.0,
-			graphics::WHITE,
-		)?;
-		//graphics::draw(ctx, &circle, (na::Point2::new(0.0, 0.0),))?;
 		//graphics::draw(ctx, &self.black_pieces[2], graphics::DrawParam::new())?;
 		let simpl_board = reneder_hepler::getMatrix(&self.live_board);
 		for (y, row) in simpl_board.iter().enumerate() {
