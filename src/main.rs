@@ -1,21 +1,56 @@
 #![allow(non_snake_case)]
 
 mod gameui;
+use chess::{Board, ChessMove, Color, Square};
 use crossbeam::crossbeam_channel::unbounded;
-use chess;
+use std::io;
+use std::thread::sleep;
+use std::time::Duration;
 
 fn main() {
 	println!("Hello, world!");
 
+	let mut rep_board = Board::default();
 
-	let rep_board = chess::Board::default();
-
-	let (s, r) = unbounded();
-	let handle = std::thread::spawn(move || {
-		let _ = gameui::main(r);
+	let (board_sender, board_receiver) = unbounded();
+	let renederwindow_handle = std::thread::spawn(move || {
+		let _ = gameui::main(board_receiver);
 	});
-	s.send(rep_board.clone()).unwrap();
+	board_sender.send(rep_board.clone()).unwrap();
 	println!("{:?}", rep_board);
 
-	handle.join();
+	let m = ChessMove::new(Square::D2, Square::D4, None);
+
+	// sleep(Duration::from_secs(15));
+
+	// let new_board = rep_board.make_move_new(m);
+
+	// board_sender.send(new_board.clone()).unwrap();
+	// println!("{:?}", rep_board);
+
+	loop {
+		let mut bakra = String::new();
+		let _ = io::stdin().read_line(&mut bakra).unwrap();
+		let bakra = bakra.trim();
+
+		if bakra == "end" {
+			break;
+		} else if bakra.chars().count() == 4 {
+
+			println!("{}", bakra[0..2].to_string());
+			println!("{}", bakra[2..4].to_string());
+			
+			let mov = ChessMove::new(
+				Square::from_string(bakra[0..2].to_string()).unwrap(),
+				Square::from_string(bakra[2..4].to_string()).unwrap(),
+				None,
+			);
+
+			rep_board = rep_board.make_move_new(mov);
+			board_sender.send(rep_board.clone());
+			println!("dracula was gay");
+		}
+	}
+
+	renederwindow_handle.join();
 }
