@@ -4,7 +4,7 @@ use ggez;
 use ggez::event;
 use ggez::graphics;
 use ggez::graphics::Image;
-use ggez::nalgebra as na;
+//use ggez::nalgebra as na;
 use ggez::{Context, GameResult};
 
 use std::env;
