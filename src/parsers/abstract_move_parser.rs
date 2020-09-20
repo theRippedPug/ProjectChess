@@ -1,6 +1,6 @@
 // use chess::{Board, ChessMove, Color, Square};
 use super::{
-	AbstractMove, ActualPos, BoardRep, ChessPieceType, ParseError, PieceCoord, PieceDest,
+	AbstractMove, AbstractPos, BoardRep, ChessPieceType, ParseError, PieceCoord, PieceDest,
 	PieceOrigin, RegularMove,
 };
 
@@ -57,7 +57,7 @@ pub fn parse(
 									// now we generate the remove the piece that gets captured
 									finalvec.push(AbstractMove::RegularMove(RegularMove {
 										origin: PieceOrigin::Existing((k.0 as u8, k.1 as u8)),
-										dest: PieceDest::OffToSide,
+										dest: PieceDest::Disposed,
 									}));
 								}
 							}
@@ -78,7 +78,7 @@ pub fn parse(
 						Ok(vec![
 							AbstractMove::RegularMove(RegularMove {
 								origin: PieceOrigin::Existing((diffs[0].0 as u8, diffs[0].1 as u8)),
-								dest: PieceDest::OffToSide,
+								dest: PieceDest::Disposed,
 							}),
 							AbstractMove::RegularMove(RegularMove {
 								origin: PieceOrigin::Reserve,
@@ -89,7 +89,7 @@ pub fn parse(
 						Ok(vec![
 							AbstractMove::RegularMove(RegularMove {
 								origin: PieceOrigin::Existing((diffs[1].0 as u8, diffs[1].1 as u8)),
-								dest: PieceDest::OffToSide,
+								dest: PieceDest::Disposed,
 							}),
 							AbstractMove::RegularMove(RegularMove {
 								origin: PieceOrigin::Reserve,
@@ -128,11 +128,11 @@ pub fn parse(
 						Ok(vec![
 							AbstractMove::RegularMove(RegularMove {
 								origin: PieceOrigin::Existing((diffs[1].0 as u8, diffs[1].1 as u8)),
-								dest: PieceDest::OffToSide,
+								dest: PieceDest::Disposed,
 							}),
 							AbstractMove::RegularMove(RegularMove {
 								origin: PieceOrigin::Existing((diffs[0].0 as u8, diffs[0].1 as u8)),
-								dest: PieceDest::OffToSide,
+								dest: PieceDest::Disposed,
 							}),
 							AbstractMove::RegularMove(RegularMove {
 								origin: PieceOrigin::Reserve,
@@ -143,11 +143,11 @@ pub fn parse(
 						Ok(vec![
 							AbstractMove::RegularMove(RegularMove {
 								origin: PieceOrigin::Existing((diffs[0].0 as u8, diffs[0].1 as u8)),
-								dest: PieceDest::OffToSide,
+								dest: PieceDest::Disposed,
 							}),
 							AbstractMove::RegularMove(RegularMove {
 								origin: PieceOrigin::Existing((diffs[1].0 as u8, diffs[1].1 as u8)),
-								dest: PieceDest::OffToSide,
+								dest: PieceDest::Disposed,
 							}),
 							AbstractMove::RegularMove(RegularMove {
 								origin: PieceOrigin::Reserve,
@@ -175,7 +175,7 @@ pub fn parse(
 												origin: PieceOrigin::Existing((
 													k.0 as u8, k.1 as u8,
 												)),
-												dest: PieceDest::OffToSide,
+												dest: PieceDest::Disposed,
 											}));
 										}
 									}

@@ -93,6 +93,7 @@ dependencies = [
  "chess",
  "crossbeam",
  "ggez",
+ "lazy_static",
 ]
 
 [[package]]

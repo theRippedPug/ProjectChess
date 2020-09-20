@@ -3,6 +3,7 @@ use std::fmt;
 
 pub mod abstract_move_parser;
 pub mod parse_helper;
+pub mod physical_move_parser;
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum ChessPieceType {
@@ -28,14 +29,14 @@ pub struct PiecePos {
 // )
 
 //a struct that represents position in a way thats mathematically workable
-pub type ActualPos = (u8, u8);
+pub type AbstractPos = (u8, u8);
 
-trait ToActualPos {
-	fn to_actual_pos(&self) -> ActualPos;
+trait ToAbstractPos {
+	fn to_abstract_pos(&self) -> AbstractPos;
 }
 
-impl ToActualPos for Square {
-	fn to_actual_pos(&self) -> ActualPos {
+impl ToAbstractPos for Square {
+	fn to_abstract_pos(&self) -> AbstractPos {
 		(
 			match self.get_rank() {
 				Rank::First => 0,
@@ -70,19 +71,18 @@ pub struct ChessPiece {
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum PieceDest {
 	Disposed,
-	OnBoard(ActualPos),
-	OffToSide,
+	OnBoard(AbstractPos),
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum PieceOrigin {
-	Existing(ActualPos),
+	Existing(AbstractPos),
 	Reserve,
 }
 #[derive(Debug)]
 pub enum AbstractMove {
 	RegularMove(RegularMove),
-	Catstling((ActualPos, ActualPos)),
+	Catstling((AbstractPos, AbstractPos)),
 }
 
 #[derive(Debug)]
@@ -112,3 +112,17 @@ pub enum MoveType {
 
 pub type BoardRep = [[Option<ChessPiece>; 8]; 8];
 pub type PieceCoord = (usize, usize);
+
+pub type PhysicalPos = (f32, f32);
+
+#[derive(Debug)]
+pub enum MovementSpeed {
+	Slow,
+	Normal,
+}
+#[derive(Debug)]
+pub struct PhysicalMove {
+	start: PhysicalPos,
+	end: PhysicalPos,
+	speed: MovementSpeed,
+}

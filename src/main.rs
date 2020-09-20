@@ -7,6 +7,9 @@ use std::io;
 use std::thread::sleep;
 use std::time::Duration;
 
+#[macro_use]
+extern crate lazy_static;
+
 pub mod parsers;
 
 fn main() {

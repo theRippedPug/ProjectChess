@@ -10,3 +10,4 @@ edition = "2018"
 ggez= "0.5.1"
 crossbeam = "0.7"
 chess = { git = "https://github.com/jordanbray/chess"}
+lazy_static = ""
