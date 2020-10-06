@@ -115,3 +115,22 @@ fn getType(tp: Piece, col: Color) -> ChessPiece {
 		piece_type: piece,
 	}
 }
+
+pub fn getPosString(x: usize, y: usize) -> String {
+	let num_part: String = x.to_string() + "," + &y.to_string();
+	let alpha_part: String = match x {
+		0 => "A",
+		1 => "B",
+		2 => "C",
+		3 => "D",
+		4 => "E",
+		5 => "F",
+		6 => "G",
+		7 => "H",
+		_ => "?",
+	}
+	.to_string()
+		+ &(y + 1).to_string();
+
+	format!("[{}]{}", num_part, alpha_part)
+}

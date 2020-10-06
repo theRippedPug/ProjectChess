@@ -16,7 +16,6 @@ pub fn get_diff(board1: &BoardRep, board2: &BoardRep) -> Vec<PieceCoord> {
 	mismatch_list
 }
 
-
 // NOTE: pos means position, board1 and board2 refer to inital and final
 // configs of the board
 pub fn parse(
